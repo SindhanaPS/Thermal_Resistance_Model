@@ -97,7 +97,7 @@ def plotdTR(wpl2,R1,R2,R3,R4,wpllow,wplhigh,dTlow1,dThigh1,dTlow2,dThigh2,dTlow3
    plt.savefig("figS2B.pdf",bbox_inches='tight',dpi=100)
 
 def plotThermalProfile(Tair,TplControl,TmolControl,TplateControl,TplResonant,TmolResonant,TplateResonant,dAu,dAl2O3,dinter,dCuSO4,ratAu,ratAl2O3):
-   fig,ax1 = plt.subplots(figsize=(12, 5))
+   fig,ax1 = plt.subplots(figsize=(8, 2.5))
    plt.ylabel(r'T ($\degree$C)')
    plt.xlabel(r'd (nm)')
 
