@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
 import numpy as np
-import pandas as pd
 from matplotlib import rc
 from matplotlib import rcParams
 from spectral_func import *
@@ -9,6 +8,18 @@ from plot_func import *
 
 
 wvm = 3242
+
+# All distances in nm
+dAu = 200
+dAl2O3 = 40
+dinter = 10
+dCuSO4 = 1000
+
+# Ratio of temperature drop over Au and Al2O3
+ratAu = 0.63
+ratAl2O3 = 1.33
+
+Tair = 25 
 
 #####################################################
 #                Importing data                     #
@@ -106,6 +117,22 @@ for i in range(wpl3.size-1):
       dTlow7 = dT7[:i+2]
       dThigh7 = dT7[i+1:]
 
+# Collect Tpl, Tmol, Tstage at resonance wpl=wvm and at wpl=4000cm^-1 in degree celsius
+### wpl = 40000cm^-1
+wplControl=4000
+for i in range(wpl2.size-1):
+   if wpl2[i]<wplControl and wpl2[i+1]>=wplControl:
+      TplControl = Tpl2[i+1]*6.626*10**(-34)*2.99*10**(10)*3242/(1.38*10**(-23)) - 273
+      TmolControl = Tmol2[i+1]*6.626*10**(-34)*2.99*10**(10)*3242/(1.38*10**(-23)) - 273
+      TplateControl = Tplate2[i+1]
+
+### wpl = wvm
+wplResonant = wvm
+for i in range(wpl2.size-1):
+   if wpl2[i]<wplResonant and wpl2[i+1]>=wplResonant:
+      TplResonant = Tpl2[i+1]*6.626*10**(-34)*2.99*10**(10)*3242/(1.38*10**(-23)) - 273
+      TmolResonant = Tmol2[i+1]*6.626*10**(-34)*2.99*10**(10)*3242/(1.38*10**(-23)) - 273
+      TplateResonant = Tplate2[i+1]
 
 ######################################################
 #                 Formatting                         #
@@ -117,13 +144,9 @@ font = {
 
 plt.rc('font', **font)
 
-
+# Set additional rc parameters
 rcParams['mathtext.fontset'] = 'cm'
-rcParams['text.latex.preamble'] = [
-       r'\usepackage{physics}',
-       r'\usepackage{amsmath}',
-       r'\usepackage{gensymb}'
-]
+rcParams['text.latex.preamble'] = r'\usepackage{physics} \usepackage{amsmath} \usepackage{gensymb}'
 
 ######################################################
 #                 Plotting                           #
@@ -137,3 +160,4 @@ plotdTR(wpl3,R1,R2,R3,R4,wpllow,wplhigh,dTlow4,dThigh4,dTlow5,dThigh5,dTlow6,dTh
 
 plotdTRVSC(wpl2,eta2,wpllow2,wplhigh2,dTlow2,dThigh2,RVSC2)
 
+plotThermalProfile(Tair,TplControl,TmolControl,TplateControl,TplResonant,TmolResonant,TplateResonant,dAu,dAl2O3,dinter,dCuSO4,ratAu,ratAl2O3)

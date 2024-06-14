@@ -29,8 +29,8 @@ def plotkoverdw(wpl,eta1,eta2,eta3,ratLP1,ratUP1,ratLP2,ratUP2,ratLP3,ratUP3,w1,
 
 def plotdTeta(wpl2,eta1,eta2,eta3,wpllow1,wplhigh1,wpllow2,wplhigh2,wpllow3,wplhigh3,dTlow1,dThigh1,dTlow2,dThigh2,dTlow3,dThigh3):
    fig,ax1 = plt.subplots()
-   plt.ylabel('-$\Delta$T ($\degree$C)')
-   plt.xlabel('$\omega_{pl}$ (cm$^{-1}$)')
+   plt.ylabel(r'-$\Delta$T ($\degree$C)')
+   plt.xlabel(r'$\omega_{pl}$ (cm$^{-1}$)')
 
    convfactor = 3242
    eta1 = eta1*convfactor
@@ -40,33 +40,33 @@ def plotdTeta(wpl2,eta1,eta2,eta3,wpllow1,wplhigh1,wpllow2,wplhigh2,wpllow3,wplh
    ax1.set_ylim([0,15])
    ax1.set_xlim([min(wpl2),max(wpl2)])
    ax1.plot(wpllow1,dTlow1,linestyle='dashed',color='Orange')
-   ax1.plot(wplhigh1,dThigh1,color='Orange',label='$\Gamma$=%.0fcm$^{-1}$' %eta1)
+   ax1.plot(wplhigh1,dThigh1,color='Orange',label=r'$\Gamma$=%.0fcm$^{-1}$' %eta1)
    ax1.plot(wpllow2,dTlow2,linestyle='dashed',color='red')
-   ax1.plot(wplhigh2,dThigh2,color='red',label='$\Gamma$=%.0fcm$^{-1}$' %eta2)
+   ax1.plot(wplhigh2,dThigh2,color='red',label=r'$\Gamma$=%.0fcm$^{-1}$' %eta2)
    ax1.plot(wpllow3,dTlow3,linestyle='dashed',color='brown')
-   ax1.plot(wplhigh3,dThigh3,color='brown',label='$\Gamma$=%.0fcm$^{-1}$' %eta3)
+   ax1.plot(wplhigh3,dThigh3,color='brown',label=r'$\Gamma$=%.0fcm$^{-1}$' %eta3)
 
    plt.legend(fontsize="14")
    plt.savefig("figS2A.pdf",bbox_inches='tight',dpi=100)
 
 def plotdTRVSC(wpl2,eta,wpllow,wplhigh,dTlow,dThigh,R):
    fig,ax1 = plt.subplots()
-   plt.xlabel('$\omega_{pl}$ (cm$^{-1}$)')
+   plt.xlabel(r'$\omega_{pl}$ (cm$^{-1}$)')
 
    convfactor = 7.5*10**8
    R = R*convfactor
    Rinter = 8.94*10**5*convfactor*np.ones_like(R)
    ax1.set_ylim([0,15])
-   ax1.set_ylabel('-$\Delta$T ($\degree$C)')
+   ax1.set_ylabel(r'-$\Delta$T ($\degree$C)')
    ax1.set_xlim([min(wpl2),max(wpl2)])
    ax1.plot(wpllow,dTlow,linestyle='dashed',color='limegreen',linewidth=2)
-   ax1.plot(wplhigh,dThigh,color='limegreen',linewidth=2,label='$-\Delta$T')
+   ax1.plot(wplhigh,dThigh,color='limegreen',linewidth=2,label=r'$-\Delta$T')
    ax1.yaxis.label.set_color('limegreen')
    ax1.tick_params(axis='y', colors='limegreen')
    plt.legend(fontsize="14")
    ax2 = ax1.twinx()
-   ax2.plot(wpl2,R,linewidth=2,color='black',label='$R_{VSC}$')
-   ax2.plot(wpl2,Rinter,linewidth=2,color='lightgrey',label='$R_{inter}$')
+   ax2.plot(wpl2,R,linewidth=2,color='black',label=r'$R_{VSC}$')
+   ax2.plot(wpl2,Rinter,linewidth=2,color='lightgrey',label=r'$R_{inter}$')
    ax2.set_ylabel('Thermal resistance (K/W)')
    ax1.spines['left'].set_color('limegreen')
 
@@ -75,8 +75,8 @@ def plotdTRVSC(wpl2,eta,wpllow,wplhigh,dTlow,dThigh,R):
 
 def plotdTR(wpl2,R1,R2,R3,R4,wpllow,wplhigh,dTlow1,dThigh1,dTlow2,dThigh2,dTlow3,dThigh3,dTlow4,dThigh4):
    fig,ax1 = plt.subplots()
-   plt.ylabel('-$\Delta$T ($\degree$C)')
-   plt.xlabel('$\omega_{pl}$ (cm$^{-1}$)')
+   plt.ylabel(r'-$\Delta$T ($\degree$C)')
+   plt.xlabel(r'$\omega_{pl}$ (cm$^{-1}$)')
 
    ax1.set_ylim([0,15])
    ax1.set_xlim([min(wpl2),max(wpl2)])
@@ -95,3 +95,23 @@ def plotdTR(wpl2,R1,R2,R3,R4,wpllow,wplhigh,dTlow1,dThigh1,dTlow2,dThigh2,dTlow3
 
    plt.legend(fontsize="14",loc='upper right')
    plt.savefig("figS2B.pdf",bbox_inches='tight',dpi=100)
+
+def plotThermalProfile(Tair,TplControl,TmolControl,TplateControl,TplResonant,TmolResonant,TplateResonant,dAu,dAl2O3,dinter,dCuSO4,ratAu,ratAl2O3):
+   fig,ax1 = plt.subplots(figsize=(12, 5))
+   plt.ylabel(r'T ($\degree$C)')
+   plt.xlabel(r'd (nm)')
+
+   TAl2O3c = TplateControl + (TplControl - TplateControl)*ratAu/(ratAu+ratAl2O3)
+   TAl2O3r = TplateResonant + (TplResonant - TplateResonant)*ratAu/(ratAu+ratAl2O3)
+
+#   ax1.set_ylim([0,50])
+   Tcontrol = [TplateControl,TAl2O3c,TplControl,TmolControl,Tair]
+   Tresonant = [TplateResonant,TAl2O3r,TplResonant,TmolResonant,Tair]
+   d = [0,dAu,dAu+dAl2O3,dAu+dAl2O3+dinter,dAu+dAl2O3+dinter+dCuSO4]
+
+   ax1.set_xlim(0,max(d))
+   ax1.plot(d,Tresonant,color='#FFC107',label='resonant')
+   ax1.plot(d,Tcontrol,color='black',linestyle='dashed',label='control')
+
+   plt.legend(fontsize="14",loc='upper right')
+   plt.savefig("figS21B.pdf",bbox_inches='tight',dpi=100)
