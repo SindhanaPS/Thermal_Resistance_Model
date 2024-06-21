@@ -38,7 +38,7 @@ def plotdTeta(wpl2,eta1,eta2,eta3,wpllow1,wplhigh1,wpllow2,wplhigh2,wpllow3,wplh
    eta3 = eta3*convfactor
 
    ax1.set_ylim([0,15])
-   ax1.set_xlim([min(wpl2),max(wpl2)])
+   ax1.set_xlim([2500,max(wpl2)])
    ax1.plot(wpllow1,dTlow1,linestyle='dashed',color='Orange')
    ax1.plot(wplhigh1,dThigh1,color='Orange',label=r'$\Gamma$=%.0fcm$^{-1}$' %eta1)
    ax1.plot(wpllow2,dTlow2,linestyle='dashed',color='red')
@@ -49,24 +49,28 @@ def plotdTeta(wpl2,eta1,eta2,eta3,wpllow1,wplhigh1,wpllow2,wplhigh2,wpllow3,wplh
    plt.legend(fontsize="14")
    plt.savefig("figS2A.pdf",bbox_inches='tight',dpi=100)
 
-def plotdTRVSC(wpl2,eta,wpllow,wplhigh,dTlow,dThigh,R):
+def plotdTRVSC(wpl2,eta,wpllow,wplhigh,dTlow,dThigh,RVSClow,RVSChigh):
    fig,ax1 = plt.subplots()
    plt.xlabel(r'$\omega_{pl}$ (cm$^{-1}$)')
 
    convfactor = 7.5*10**8
-   R = R*convfactor
-   Rinter = 8.94*10**5*convfactor*np.ones_like(R)
+   RVSClow = RVSClow*convfactor
+   RVSChigh = RVSChigh*convfactor
+   Rinterlow = 8.94*10**5*convfactor*np.ones_like(RVSClow)
+   Rinterhigh = 8.94*10**5*convfactor*np.ones_like(RVSChigh)
    ax1.set_ylim([0,15])
    ax1.set_ylabel(r'-$\Delta$T ($\degree$C)')
-   ax1.set_xlim([min(wpl2),max(wpl2)])
+   ax1.set_xlim([2500,max(wpl2)])
    ax1.plot(wpllow,dTlow,linestyle='dashed',color='limegreen',linewidth=2)
    ax1.plot(wplhigh,dThigh,color='limegreen',linewidth=2,label=r'$-\Delta$T')
    ax1.yaxis.label.set_color('limegreen')
    ax1.tick_params(axis='y', colors='limegreen')
    plt.legend(fontsize="14")
    ax2 = ax1.twinx()
-   ax2.plot(wpl2,R,linewidth=2,color='black',label=r'$R_{VSC}$')
-   ax2.plot(wpl2,Rinter,linewidth=2,color='lightgrey',label=r'$R_{inter}$')
+   ax2.plot(wpllow,RVSClow,linestyle='dashed',linewidth=2,color='black')
+   ax2.plot(wplhigh,RVSChigh,linewidth=2,color='black',label=r'$R_{VSC}$')
+   ax2.plot(wpllow,Rinterlow,linewidth=2,color='lightgrey')
+   ax2.plot(wplhigh,Rinterhigh,linewidth=2,color='lightgrey',label=r'$R_{inter}$')
    ax2.set_ylabel('Thermal resistance (K/W)')
    ax1.spines['left'].set_color('limegreen')
 
@@ -79,7 +83,7 @@ def plotdTR(wpl2,R1,R2,R3,R4,wpllow,wplhigh,dTlow1,dThigh1,dTlow2,dThigh2,dTlow3
    plt.xlabel(r'$\omega_{pl}$ (cm$^{-1}$)')
 
    ax1.set_ylim([0,15])
-   ax1.set_xlim([min(wpl2),max(wpl2)])
+   ax1.set_xlim([2500,max(wpl2)])
    ax1.plot(wpllow,dTlow1,linestyle='dashed',color='cyan')
    #ax1.plot(wplhigh,dThigh1,color='cyan',label='$R^*_{total}$=%.2E' %R1)
    ax1.plot(wplhigh,dThigh1,color='cyan',label=r'$R_{tot}=7.5\times10^{13}K/W$')
@@ -115,3 +119,30 @@ def plotThermalProfile(Tair,TplControl,TmolControl,TplateControl,TplResonant,Tmo
 
    plt.legend(fontsize="14",loc='upper right')
    plt.savefig("figS21B.pdf",bbox_inches='tight',dpi=100)
+
+def plotTonsetRVSC(wpl2, eta2, wpllow, wplhigh, Tplatelow, Tplatehigh, RVSClow, RVSChigh, wplResonant, wplControl, TplateResonant, TplateControl):
+    plt.rcParams.update({'font.size': 26})
+
+    convfactor = 7.5 * 10**8
+    RVSClow = RVSClow * convfactor
+    RVSChigh = RVSChigh * convfactor
+    Rinterlow = 8.94 * 10**5 * convfactor * np.ones_like(RVSClow)
+    Rinterhigh = 8.94 * 10**5 * convfactor * np.ones_like(RVSChigh)
+
+    # Create a single subplot with specified aspect ratio
+    fig, ax = plt.subplots(figsize=(8, 6))  # Width is 1.5 times the total height
+
+    # Plot 'dTlow' and 'dThigh' on the subplot
+    ax.plot(wpllow, Tplatelow, linestyle='dashed', color='black', linewidth=2)
+    ax.plot(wplhigh, Tplatehigh, color='black', linewidth=2)
+    ax.plot(wplResonant, TplateResonant, color='#0072BD',marker='s',markersize=15)
+    ax.plot(wplControl, TplateControl, color='#D95319',marker='s',markersize=15)
+    ax.set_xlabel(r'$\omega_{pl}$ (cm$^{-1}$)')
+    ax.set_ylabel(r'Onset T. ($\degree$C)')
+    ax.set_xlim([2500, max(wpl2)])
+
+    # Adjust the layout to prevent overlapping
+    plt.tight_layout()
+
+    # Save the plot as a PDF
+    fig.savefig("fig1D.pdf", bbox_inches='tight', dpi=100)

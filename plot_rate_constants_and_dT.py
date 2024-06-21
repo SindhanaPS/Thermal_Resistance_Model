@@ -97,6 +97,10 @@ for i in range(wpl2.size-1):
       wplhigh2 = wpl2[i+1:]
       dTlow2 = dT2[:i+2]
       dThigh2 = dT2[i+1:]
+      RVSClow2 = RVSC2[:i+2]
+      RVSChigh2 = RVSC2[i+1:]
+      Tplatelow2 = Tplate2[:i+2]
+      Tplatehigh2 = Tplate2[i+1:]
    if wpl2[i]<w3r and wpl2[i+1]>=w3r:
       wpllow3 = wpl2[:i+2]
       wplhigh3 = wpl2[i+1:]
@@ -158,6 +162,8 @@ plotdTeta(wpl2,eta1,eta2,eta3,wpllow1,wplhigh1,wpllow2,wplhigh2,wpllow3,wplhigh3
 
 plotdTR(wpl3,R1,R2,R3,R4,wpllow,wplhigh,dTlow4,dThigh4,dTlow5,dThigh5,dTlow6,dThigh6,dTlow7,dThigh7)
 
-plotdTRVSC(wpl2,eta2,wpllow2,wplhigh2,dTlow2,dThigh2,RVSC2)
+plotdTRVSC(wpl2,eta2,wpllow2,wplhigh2,dTlow2,dThigh2,RVSClow2,RVSChigh2)
+
+plotTonsetRVSC(wpl2,eta2,wpllow2,wplhigh2,Tplatelow2,Tplatehigh2,RVSClow2,RVSChigh2,wplResonant,wplControl,TplateResonant,TplateControl)
 
 plotThermalProfile(Tair,TplControl,TmolControl,TplateControl,TplResonant,TmolResonant,TplateResonant,dAu,dAl2O3,dinter,dCuSO4,ratAu,ratAl2O3)
