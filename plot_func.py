@@ -4,6 +4,7 @@ from matplotlib import cm
 import matplotlib.ticker as tck
 import math as m
 from cmath import pi
+from matplotlib.ticker import MultipleLocator
 
 def plotkoverdw(wpl,eta1,eta2,eta3,ratLP1,ratUP1,ratLP2,ratUP2,ratLP3,ratUP3,w1,w2,w3):
    fig,ax1 = plt.subplots()
@@ -121,7 +122,16 @@ def plotThermalProfile(Tair,TplControl,TmolControl,TplateControl,TplResonant,Tmo
    plt.savefig("figS21B.pdf",bbox_inches='tight',dpi=100)
 
 def plotTonsetRVSC(wpl2, eta2, wpllow, wplhigh, Tplatelow, Tplatehigh, RVSClow, RVSChigh, wplResonant, wplControl, TplateResonant, TplateControl):
-    plt.rcParams.update({'font.size': 26})
+   ######################################################
+   #                 Formatting                         #
+   ######################################################
+
+
+    plt.rcParams.update({
+    'font.size': 26,
+    'font.family': 'Arial',
+    'font.weight': 'bold'
+    })
 
     convfactor = 7.5 * 10**8
     RVSClow = RVSClow * convfactor
@@ -131,15 +141,25 @@ def plotTonsetRVSC(wpl2, eta2, wpllow, wplhigh, Tplatelow, Tplatehigh, RVSClow, 
 
     # Create a single subplot with specified aspect ratio
     fig, ax = plt.subplots(figsize=(8, 6))  # Width is 1.5 times the total height
+    
+    # Make the border of the plot bold
+    for spine in ax.spines.values():
+       spine.set_linewidth(3)  # Adjust the border (spine) linewidth
 
+    ax.tick_params(axis='both', which='major', labelsize=26, width=3, direction='in', length=7)
+    
     # Plot 'dTlow' and 'dThigh' on the subplot
     ax.plot(wpllow, Tplatelow, linestyle='dashed', color='black', linewidth=2)
     ax.plot(wplhigh, Tplatehigh, color='black', linewidth=2)
     ax.plot(wplResonant, TplateResonant, color='#0072BD',marker='s',markersize=15)
     ax.plot(wplControl, TplateControl, color='#D95319',marker='s',markersize=15)
-    ax.set_xlabel(r'$\omega_{pl}$ (cm$^{-1}$)')
-    ax.set_ylabel(r'Onset T. ($\degree$C)')
+    ax.set_xlabel(r'$\mathbf{\omega_{pl}}$ (cm$\mathbf{^{-1}}$)', fontweight='bold', fontsize='30')
+    ax.set_ylabel(r'Onset T. ($\degree$C)', fontweight='bold', fontsize='30')
+
     ax.set_xlim([2500, max(wpl2)])
+    ax.yaxis.set_major_locator(MultipleLocator(2))
+    # Add grey grid lines parallel to the x-axis
+    ax.grid(which='both', axis='y', linestyle='-', linewidth=3, color='lightgray')
 
     # Adjust the layout to prevent overlapping
     plt.tight_layout()
