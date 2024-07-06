@@ -16,8 +16,8 @@ The code 'compute_rate_constants.py' can be used to compute the upper polariton 
 rate. It produces files 'rate_const_0_02.txt', 'rate_const_0_04.txt', 'rate_const_0_08.txt' when
 eta equals 0.02, 0.04, 0.08, respectively (change values for variables 'filename' and 'eta' in code).
 
-The code 'plot_rate_constants_and_dT.py' produces Figures S2A, S2B and S3 taking the following
-files as inputs:
+The code 'plot_rate_constants_and_dT.py' produces Figures 5D, S20A, S20B, S21A and part of S21B taking 
+the following files as inputs:
 
 1) rate_const_0_02.txt
 2) rate_const_0_04.txt

@@ -48,35 +48,50 @@ def plotdTeta(wpl2,eta1,eta2,eta3,wpllow1,wplhigh1,wpllow2,wplhigh2,wpllow3,wplh
    ax1.plot(wplhigh3,dThigh3,color='brown',label=r'$\Gamma$=%.0fcm$^{-1}$' %eta3)
 
    plt.legend(fontsize="14")
-   plt.savefig("figS2A.pdf",bbox_inches='tight',dpi=100)
+   plt.savefig("figS20A.pdf",bbox_inches='tight',dpi=100)
 
-def plotdTRVSC(wpl2,eta,wpllow,wplhigh,dTlow,dThigh,RVSClow,RVSChigh):
-   fig,ax1 = plt.subplots()
-   plt.xlabel(r'$\omega_{pl}$ (cm$^{-1}$)')
+def plotdTRVSC(wpl2, eta, wpllow, wplhigh, dTlow, dThigh, RVSClow, RVSChigh):
+    fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(10, 8))
 
-   convfactor = 7.5*10**8
-   RVSClow = RVSClow*convfactor
-   RVSChigh = RVSChigh*convfactor
-   Rinterlow = 8.94*10**5*convfactor*np.ones_like(RVSClow)
-   Rinterhigh = 8.94*10**5*convfactor*np.ones_like(RVSChigh)
-   ax1.set_ylim([0,15])
-   ax1.set_ylabel(r'-$\Delta$T ($\degree$C)')
-   ax1.set_xlim([2500,max(wpl2)])
-   ax1.plot(wpllow,dTlow,linestyle='dashed',color='limegreen',linewidth=2)
-   ax1.plot(wplhigh,dThigh,color='limegreen',linewidth=2,label=r'$-\Delta$T')
-   ax1.yaxis.label.set_color('limegreen')
-   ax1.tick_params(axis='y', colors='limegreen')
-   plt.legend(fontsize="14")
-   ax2 = ax1.twinx()
-   ax2.plot(wpllow,RVSClow,linestyle='dashed',linewidth=2,color='black')
-   ax2.plot(wplhigh,RVSChigh,linewidth=2,color='black',label=r'$R_{VSC}$')
-   ax2.plot(wpllow,Rinterlow,linewidth=2,color='lightgrey')
-   ax2.plot(wplhigh,Rinterhigh,linewidth=2,color='lightgrey',label=r'$R_{inter}$')
-   ax2.set_ylabel('Thermal resistance (K/W)')
-   ax1.spines['left'].set_color('limegreen')
+    plt.rcParams.update({
+    'font.size': 24,
+    })
+ 
+    # Make the border of the plot bold
+    for spine in ax1.spines.values():
+       spine.set_linewidth(2)  # Adjust the border (spine) linewidth
 
-   plt.legend(fontsize="14")
-   plt.savefig("figS3.pdf",bbox_inches='tight',dpi=100)
+    # Make the border of the plot bold
+    for spine in ax2.spines.values():
+       spine.set_linewidth(2)  # Adjust the border (spine) linewidth
+
+    convfactor = 7.5 * 10**8
+    RVSClow = RVSClow * convfactor
+    RVSChigh = RVSChigh * convfactor
+    Rinterlow = 8.94 * 10**5 * convfactor * np.ones_like(RVSClow)
+    Rinterhigh = 8.94 * 10**5 * convfactor * np.ones_like(RVSChigh)
+    
+    # Plot for Delta T
+    ax1.set_ylabel(r'-$\Delta$T ($\degree$C)', fontsize='26')
+    ax1.plot(wpllow, dTlow, linestyle='dashed', color='limegreen', linewidth=4, label=r'$-\Delta$T$ low$')
+    ax1.plot(wplhigh, dThigh, color='limegreen', linewidth=4, label=r'$-\Delta$T$ high$')
+    ax1.tick_params(axis='both', which='major', labelsize=24, width=2)
+ 
+    # Plot for Thermal resistance
+    ax2.plot(wpllow, RVSClow, linestyle='dashed', linewidth=2, color='black')
+    ax2.plot(wplhigh, RVSChigh, linewidth=4, color='black', label=r'$R_{VSC}$')
+    ax2.plot(wpllow, Rinterlow, linewidth=4, color='lightgrey', label=r'$R_{inter}$')
+    ax2.plot(wplhigh, Rinterhigh, linewidth=4, color='lightgrey')
+    ax2.set_ylabel('Thermal\nresistance (K/W)', fontsize='24')
+    ax2.legend(loc='upper left', fontsize="24")
+    ax2.set_xlim([2500, max(wpl2)])
+    ax2.tick_params(axis='both', which='major', labelsize=24, width=2)
+
+    # Shared X-axis label
+    plt.xlabel(r'$\omega_{pl}$ (cm$^{-1}$)', fontsize='24')
+    
+    plt.tight_layout()
+    plt.savefig("figS21A.pdf",bbox_inches='tight',dpi=100)
 
 def plotdTR(wpl2,R1,R2,R3,R4,wpllow,wplhigh,dTlow1,dThigh1,dTlow2,dThigh2,dTlow3,dThigh3,dTlow4,dThigh4):
    fig,ax1 = plt.subplots()
@@ -99,7 +114,7 @@ def plotdTR(wpl2,R1,R2,R3,R4,wpllow,wplhigh,dTlow1,dThigh1,dTlow2,dThigh2,dTlow3
    ax1.plot(wplhigh,dThigh4,color='navy',label=r'$R_{tot}=7.5\times10^{16}K/W$')
 
    plt.legend(fontsize="14",loc='upper right')
-   plt.savefig("figS2B.pdf",bbox_inches='tight',dpi=100)
+   plt.savefig("figS20B.pdf",bbox_inches='tight',dpi=100)
 
 def plotThermalProfile(Tair,TplControl,TmolControl,TplateControl,TplResonant,TmolResonant,TplateResonant,dAu,dAl2O3,dinter,dCuSO4,ratAu,ratAl2O3):
    fig,ax1 = plt.subplots(figsize=(8, 2.5))
@@ -149,15 +164,15 @@ def plotTonsetRVSC(wpl2, eta2, wpllow, wplhigh, Tplatelow, Tplatehigh, RVSClow, 
     ax.tick_params(axis='both', which='major', labelsize=26, width=3, direction='in', length=7)
     
     # Plot 'dTlow' and 'dThigh' on the subplot
-    ax.plot(wpllow, Tplatelow, linestyle='dashed', color='black', linewidth=2)
-    ax.plot(wplhigh, Tplatehigh, color='black', linewidth=2)
+    ax.plot(wpllow, Tplatelow, linestyle='dashed', color='black', linewidth=3)
+    ax.plot(wplhigh, Tplatehigh, color='black', linewidth=3)
     ax.plot(wplResonant, TplateResonant, color='#0072BD',marker='s',markersize=15)
     ax.plot(wplControl, TplateControl, color='#D95319',marker='s',markersize=15)
     ax.set_xlabel(r'$\mathbf{\omega_{pl}}$ (cm$\mathbf{^{-1}}$)', fontweight='bold', fontsize='30')
     ax.set_ylabel(r'Onset T. ($\degree$C)', fontweight='bold', fontsize='30')
 
     ax.set_xlim([2500, max(wpl2)])
-    ax.yaxis.set_major_locator(MultipleLocator(2))
+    ax.yaxis.set_major_locator(MultipleLocator(1))
     # Add grey grid lines parallel to the x-axis
     ax.grid(which='both', axis='y', linestyle='-', linewidth=3, color='lightgray')
 
@@ -165,4 +180,4 @@ def plotTonsetRVSC(wpl2, eta2, wpllow, wplhigh, Tplatelow, Tplatehigh, RVSClow, 
     plt.tight_layout()
 
     # Save the plot as a PDF
-    fig.savefig("fig1D.pdf", bbox_inches='tight', dpi=100)
+    fig.savefig("fig5D.pdf", bbox_inches='tight', dpi=100)

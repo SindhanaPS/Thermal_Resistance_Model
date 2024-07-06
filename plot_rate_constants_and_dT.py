@@ -162,8 +162,8 @@ plotdTeta(wpl2,eta1,eta2,eta3,wpllow1,wplhigh1,wpllow2,wplhigh2,wpllow3,wplhigh3
 
 plotdTR(wpl3,R1,R2,R3,R4,wpllow,wplhigh,dTlow4,dThigh4,dTlow5,dThigh5,dTlow6,dThigh6,dTlow7,dThigh7)
 
+plotThermalProfile(Tair,TplControl,TmolControl,TplateControl,TplResonant,TmolResonant,TplateResonant,dAu,dAl2O3,dinter,dCuSO4,ratAu,ratAl2O3)
+
 plotdTRVSC(wpl2,eta2,wpllow2,wplhigh2,dTlow2,dThigh2,RVSClow2,RVSChigh2)
 
 plotTonsetRVSC(wpl2,eta2,wpllow2,wplhigh2,Tplatelow2,Tplatehigh2,RVSClow2,RVSChigh2,wplResonant,wplControl,TplateResonant,TplateControl)
-
-plotThermalProfile(Tair,TplControl,TmolControl,TplateControl,TplResonant,TmolResonant,TplateResonant,dAu,dAl2O3,dinter,dCuSO4,ratAu,ratAl2O3)
