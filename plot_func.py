@@ -78,7 +78,7 @@ def plotdTRVSC(wpl2, eta, wpllow, wplhigh, dTlow, dThigh, RVSClow, RVSChigh):
     ax1.tick_params(axis='both', which='major', labelsize=24, width=2)
  
     # Plot for Thermal resistance
-    ax2.plot(wpllow, RVSClow, linestyle='dashed', linewidth=2, color='black')
+    ax2.plot(wpllow, RVSClow, linestyle='dashed', linewidth=4, color='black')
     ax2.plot(wplhigh, RVSChigh, linewidth=4, color='black', label=r'$R_{VSC}$')
     ax2.plot(wpllow, Rinterlow, linewidth=4, color='lightgrey', label=r'$R_{inter}$')
     ax2.plot(wplhigh, Rinterhigh, linewidth=4, color='lightgrey')
