@@ -5,6 +5,7 @@ import matplotlib.ticker as tck
 import math as m
 from cmath import pi
 from matplotlib.ticker import MultipleLocator
+from matplotlib.gridspec import GridSpec
 
 def plotkoverdw(wpl,eta1,eta2,eta3,ratLP1,ratUP1,ratLP2,ratUP2,ratLP3,ratUP3,w1,w2,w3):
    fig,ax1 = plt.subplots()
@@ -48,7 +49,40 @@ def plotdTeta(wpl2,eta1,eta2,eta3,wpllow1,wplhigh1,wpllow2,wplhigh2,wpllow3,wplh
    ax1.plot(wplhigh3,dThigh3,color='brown',label=r'$\Gamma$=%.0fcm$^{-1}$' %eta3)
 
    plt.legend(fontsize="14")
-   plt.savefig("figS20A.pdf",bbox_inches='tight',dpi=100)
+   plt.savefig("figS25Aold.pdf",bbox_inches='tight',dpi=100)
+
+def plotdTeta2(wpl2,eta1,eta2,eta3,wpllow1,wplhigh1,wpllow2,wplhigh2,wpllow3,wplhigh3,dTlow1,dThigh1,dTlow2,dThigh2,dTlow3,dThigh3):
+   fig,ax1 = plt.subplots()
+
+   plt.rcParams.update({
+    'font.size': 22,
+   })
+
+   # Make the border of the plot bold
+   for spine in ax1.spines.values():
+      spine.set_linewidth(3)  # Adjust the border (spine) linewidth
+
+   ax1.tick_params(axis='both', which='major', labelsize=22, width=3, direction='in', length=7)
+
+   plt.ylabel(r'-$\Delta$T ($\degree$C)', fontsize='22')
+   plt.xlabel(r'$\omega_{pl}$ (cm$^{-1}$)', fontsize='22')
+    
+   convfactor = 3242
+   eta1 = eta1*convfactor
+   eta2 = eta2*convfactor
+   eta3 = eta3*convfactor
+    
+   ax1.set_ylim([0,15])
+   ax1.set_xlim([2500,max(wpl2)]) 
+   ax1.plot(wpllow1,dTlow1,linestyle='dashed',linewidth=4,color='Orange')
+   ax1.plot(wplhigh1,dThigh1,color='Orange',linewidth=4,label=r'$\Gamma$=%.0fcm$^{-1}$' %eta1)
+   ax1.plot(wpllow2,dTlow2,linestyle='dashed',linewidth=4,color='red')
+   ax1.plot(wplhigh2,dThigh2,color='red',linewidth=4,label=r'$\Gamma$=%.0fcm$^{-1}$' %eta2)
+   ax1.plot(wpllow3,dTlow3,linestyle='dashed',linewidth=4,color='brown')
+   ax1.plot(wplhigh3,dThigh3,color='brown',linewidth=4,label=r'$\Gamma$=%.0fcm$^{-1}$' %eta3)
+    
+   plt.legend(fontsize="14")
+   plt.savefig("figS25A.pdf",bbox_inches='tight',dpi=100)
 
 def plotdTRVSC(wpl2, eta, wpllow, wplhigh, dTlow, dThigh, RVSClow, RVSChigh):
     fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(10, 8))
@@ -91,7 +125,65 @@ def plotdTRVSC(wpl2, eta, wpllow, wplhigh, dTlow, dThigh, RVSClow, RVSChigh):
     plt.xlabel(r'$\omega_{pl}$ (cm$^{-1}$)', fontsize='24')
     
     plt.tight_layout()
-    plt.savefig("figS21A.pdf",bbox_inches='tight',dpi=100)
+    plt.savefig("figS26Aold.pdf",bbox_inches='tight',dpi=100)
+
+def plotdTRVSC2(wpl2, eta, wpllow, wplhigh, dTlow, dThigh, RVSClow, RVSChigh):
+
+    aspect_ratio = 6 / 6
+
+    # Base height in inches
+    base_height = 6
+
+    # Calculate width based on the aspect ratio
+    width = base_height * aspect_ratio
+
+    fig = plt.figure(figsize=(width, base_height*1.3))
+    gs = GridSpec(2, 1, height_ratios=[0.3, 1], hspace=0.05)
+    plt.rcParams.update({
+    'font.size': 22,
+    })
+
+    ax1 = fig.add_subplot(gs[0])
+    ax2 = fig.add_subplot(gs[1], sharex=ax1)
+
+    convfactor = 7.5 * 10**8
+    RVSClow = RVSClow * convfactor
+    RVSChigh = RVSChigh * convfactor
+    Rinterlow = 8.94 * 10**5 * convfactor * np.ones_like(RVSClow)
+    Rinterhigh = 8.94 * 10**5 * convfactor * np.ones_like(RVSChigh)
+
+    # Make the border of the plot bold
+    for spine in ax1.spines.values():
+       spine.set_linewidth(3)  # Adjust the border (spine) linewidth
+    for spine in ax2.spines.values():
+       spine.set_linewidth(3)  # Adjust the border (spine) linewidth
+
+    ax1.tick_params(axis='both', which='major', labelsize=22, width=3, direction='in', length=7)
+    ax2.tick_params(axis='both', which='major', labelsize=22, width=3, direction='in', length=7)
+
+    # Remove x-axis labels from ax1
+    ax1.tick_params(axis='x', labelbottom=False)
+
+    # Plot for Thermal resistance
+    ax1.plot(wpllow, RVSClow, linestyle='dashed', linewidth=4, color='black')
+    ax1.plot(wplhigh, RVSChigh, linewidth=4, color='black', label=r'$R_{VSC}$')
+    ax1.plot(wpllow, Rinterlow, linewidth=4, color='lightgrey', label=r'$R_{inter}$')
+    ax1.plot(wplhigh, Rinterhigh, linewidth=4, color='lightgrey')
+    ylabel1 = ax1.set_ylabel('Thermal\nresistance (K/W)', fontsize='20')
+    ax1.legend(loc='upper left', fontsize="15",frameon=False)
+    ax1.set_xlim([2500, max(wpl2)])
+
+    # Plot for Delta T
+    ax2.set_ylabel(r'-$\Delta$T ($\degree$C)', fontsize='22')
+    ax2.plot(wpllow, dTlow, linestyle='dashed', color='#0877c4', linewidth=4, label=r'$-\Delta$T$ low$')
+    ax2.plot(wplhigh, dThigh, color='#0877c4', linewidth=4, label=r'$-\Delta$T$ high$')
+    ax2.set_xlim([2500, max(wpl2)])
+
+    # Shared X-axis label
+    xlabel = plt.xlabel(r'$\omega_{pl}$ (cm$^{-1}$)', fontsize='22')
+
+    plt.tight_layout()
+    plt.savefig("figS26A.pdf",bbox_inches='tight', bbox_extra_artists=[ylabel1, xlabel],dpi=100)
 
 def plotdTR(wpl2,R1,R2,R3,R4,wpllow,wplhigh,dTlow1,dThigh1,dTlow2,dThigh2,dTlow3,dThigh3,dTlow4,dThigh4):
    fig,ax1 = plt.subplots()
@@ -114,12 +206,55 @@ def plotdTR(wpl2,R1,R2,R3,R4,wpllow,wplhigh,dTlow1,dThigh1,dTlow2,dThigh2,dTlow3
    ax1.plot(wplhigh,dThigh4,color='navy',label=r'$R_{tot}=7.5\times10^{16}K/W$')
 
    plt.legend(fontsize="14",loc='upper right')
-   plt.savefig("figS20B.pdf",bbox_inches='tight',dpi=100)
+   plt.savefig("figS25Bold.pdf",bbox_inches='tight',dpi=100)
+
+def plotdTR2(wpl2,R1,R2,R3,R4,wpllow,wplhigh,dTlow1,dThigh1,dTlow2,dThigh2,dTlow3,dThigh3,dTlow4,dThigh4):
+   fig,ax1 = plt.subplots()
+
+   plt.rcParams.update({
+    'font.size': 22,
+   })
+
+   # Make the border of the plot bold
+   for spine in ax1.spines.values():
+      spine.set_linewidth(3)  # Adjust the border (spine) linewidth
+
+   ax1.tick_params(axis='both', which='major', labelsize=22, width=3, direction='in', length=7)
+
+   plt.ylabel(r'-$\Delta$T ($\degree$C)', fontsize='22')
+   plt.xlabel(r'$\omega_{pl}$ (cm$^{-1}$)', fontsize='22')
+
+   ax1.set_ylim([0,15])
+   ax1.set_xlim([2500,max(wpl2)])
+   ax1.plot(wpllow,dTlow1,linestyle='dashed',linewidth=4,color='cyan')
+   #ax1.plot(wplhigh,dThigh1,color='cyan',label='$R^*_{total}$=%.2E' %R1)
+   ax1.plot(wplhigh,dThigh1,color='cyan',linewidth=4,label=r'$R_{tot}=7.5\times10^{13}K/W$')
+   ax1.plot(wpllow,dTlow2,linestyle='dashed',linewidth=4,color='deepskyblue')
+   #ax1.plot(wplhigh,dThigh2,color='deepskyblue',label='$R^*_{total}$=%.2E' %R2)
+   ax1.plot(wplhigh,dThigh2,color='deepskyblue',linewidth=4,label=r'$R_{tot}=7.5\times10^{14}K/W$')
+   ax1.plot(wpllow,dTlow3,linestyle='dashed',linewidth=4,color='blue') 
+   #ax1.plot(wplhigh,dThigh3,color='blue',label='$R^*_{total}$=%.2E' %R3)
+   ax1.plot(wplhigh,dThigh3,color='blue',linewidth=4,label=r'$R_{tot}=7.5\times10^{15}K/W$')
+   ax1.plot(wpllow,dTlow4,linestyle='dashed',linewidth=4,color='navy')
+   #ax1.plot(wplhigh,dThigh4,color='navy',label='$R^*_{total}$=%.2E' %R4)
+   ax1.plot(wplhigh,dThigh4,color='navy',linewidth=4,label=r'$R_{tot}=7.5\times10^{16}K/W$')
+
+   plt.legend(fontsize="14",loc='upper right')
+   plt.savefig("figS25B.pdf",bbox_inches='tight',dpi=100)
 
 def plotThermalProfile(Tair,TplControl,TmolControl,TplateControl,TplResonant,TmolResonant,TplateResonant,dAu,dAl2O3,dinter,dCuSO4,ratAu,ratAl2O3):
-   fig,ax1 = plt.subplots(figsize=(8, 2.5))
-   plt.ylabel(r'T ($\degree$C)')
-   plt.xlabel(r'd (nm)')
+   fig,ax1 = plt.subplots(figsize=(8, 5))
+   plt.rcParams.update({
+    'font.size': 22,
+    })
+   plt.ylabel(r'T ($\degree$C)',fontsize='22')
+   plt.xlabel(r'd (nm)',fontsize='22')
+
+   # Make the border of the plot bold
+   for spine in ax1.spines.values():
+      spine.set_linewidth(3)  # Adjust the border (spine) linewidth
+
+   ax1.tick_params(axis='both', which='major', labelsize=22, width=3, direction='in', length=7)
 
    TAl2O3c = TplateControl + (TplControl - TplateControl)*ratAu/(ratAu+ratAl2O3)
    TAl2O3r = TplateResonant + (TplResonant - TplateResonant)*ratAu/(ratAu+ratAl2O3)
@@ -130,11 +265,11 @@ def plotThermalProfile(Tair,TplControl,TmolControl,TplateControl,TplResonant,Tmo
    d = [0,dAu,dAu+dAl2O3,dAu+dAl2O3+dinter,dAu+dAl2O3+dinter+dCuSO4]
 
    ax1.set_xlim(0,max(d))
-   ax1.plot(d,Tresonant,color='#FFC107',label='resonant')
-   ax1.plot(d,Tcontrol,color='black',linestyle='dashed',label='control')
+   ax1.plot(d,Tresonant,color='#FFC107',linewidth=4,label='resonant')
+   ax1.plot(d,Tcontrol,color='black',linewidth=4,linestyle='dashed',label='control')
 
    plt.legend(fontsize="14",loc='upper right')
-   plt.savefig("figS21B.pdf",bbox_inches='tight',dpi=100)
+   plt.savefig("figS26B.pdf",bbox_inches='tight',dpi=100)
 
 def plotTonsetRVSC(wpl2, eta2, wpllow, wplhigh, Tplatelow, Tplatehigh, RVSClow, RVSChigh, wplResonant, wplControl, TplateResonant, TplateControl):
    ######################################################
