@@ -48,6 +48,14 @@ Tpl2 = data2[:,7]
 Tmol2 = data2[:,8]
 RVSC2 = np.divide(Tpl2-Tmol2,Q2)
 
+# Filter rows where wpl2 is greater than or equal to 2490
+filtered_indices = wpl2 >= 2490
+filtered_wpl2 = wpl2[filtered_indices]
+filtered_Tplate2 = Tplate2[filtered_indices]
+
+# Save the filtered data to a text file
+np.savetxt("Fig5D.txt", np.column_stack((filtered_wpl2, filtered_Tplate2)), fmt='%10.5f', header="wpl OnsetT")
+
 wpl3 = data4[:,1]
 dT4 = data4[:,3]
 dT5 = data5[:,3]
