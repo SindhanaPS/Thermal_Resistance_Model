@@ -1,5 +1,5 @@
 ######################################################################################################
-Code accompanying manuscript https://www.doi.org/10.26434/chemrxiv-2023-gdmxl
+Code accompanying manuscript https://www.nature.com/articles/s41557-024-01723-6
 
 Everything is in reduced units in the mathematica notebook 'heat_flow_with_polaritons_mechanism.nb'
 
